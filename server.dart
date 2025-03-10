@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
 
-import 'bin/login/entities/login_user.dart';
+
+import 'bin/user/entities/login_user.dart';
 
 Future<Response> handler(Request request) async {
   if (request.method == 'POST' && request.url.path == 'add_usuario') {
@@ -11,7 +12,7 @@ Future<Response> handler(Request request) async {
       final body = await request.readAsString();
       final data = jsonDecode(body);
 
-      final user = LoginUser.fromJson(data);
+      final user = User.fromJson(data);
 
       print('Usuário recebido: Name=${user.name}, Email=${user.email}, Password=${user.password}');
 
