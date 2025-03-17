@@ -1,39 +1,45 @@
 import '../database/database_helper.dart';
 import '../user/entities/login_user.dart';
 
-class RepositoryUser {
 
-  static Future<void> addUser(User user) async {
+abstract class IRepositoryUser{
+
+  Future<void> addUser(User user);
+
+  Future<List<Map<String, dynamic>>> getUsers();
+
+  Future<User?> findUser(String email, String password);
+}
+
+class RepositoryUser  implements IRepositoryUser{
+
+  @override
+  Future<void> addUser(User user) async {
      try {
-       print('to aqui2 !!!!!!!!!!!!!');
        print('user ${user.toString()}');
 
        final db = DatabaseHelper.database;
-
-       print('Inserindo dados no banco...');
 
        await db.insert('usuarios', {
          'nome': user.name,
          'email': user.email,
          'password': user.password,
        });
-
-       print('Usuário adicionado com sucesso! ');
      } catch (e) {
        print('Erro ao inserir usuário: $e');
      }
    }
 
 
-   static Future<List<Map<String, dynamic>>> getUsers() async {
-     print('Chegou no repositório -> addUser');
+    @override
+  Future<List<Map<String, dynamic>>> getUsers() async {
     final db = DatabaseHelper.database;
     return await db.query('usuarios');
   }
 
-   static Future<User?> findUser(String email, String password) async {
+    @override
+  Future<User?> findUser(String email, String password) async {
      try {
-       print('Chegou no repositório -> addUser');
        final db = DatabaseHelper.database;
        final result = await db.query(
          'usuarios',
