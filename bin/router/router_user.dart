@@ -13,6 +13,19 @@ class UserRouter {
   Router get router {
     final router = Router();
 
+
+    router.get('/get_servidor', (Request request) async {
+      try {
+        return Response.ok(
+            jsonEncode({'message': 'Servidor rodando'}),
+            headers: {'Content-Type': 'application/json'});
+      } catch (e) {
+        return Response.internalServerError(
+            body: jsonEncode({'error': 'Erro ao rodar servidor'}),
+            headers: {'Content-Type': 'application/json'});
+      }
+    });
+
     router.post('/add_customer', (Request request) async {
       try {
         final repository = RepositoryCustomer();
@@ -68,18 +81,27 @@ class UserRouter {
         final password = data['password'];
 
         final user = await useCaseUser.findUser(email, password);
+
+
+
         if (user != null) {
-          return Response.ok(jsonEncode({'message': 'Login bem-sucedido'}),
-              headers: {'Content-Type': 'application/json'});
+          return Response.ok(
+            jsonEncode({
+              'user': user.toJson()
+            }),
+            headers: {'Content-Type': 'application/json'},
+          );
         } else {
           return Response.forbidden(
-              jsonEncode({'message': 'Credenciais inválidas'}),
-              headers: {'Content-Type': 'application/json'});
+            jsonEncode({'message': 'Credenciais inválidas'}),
+            headers: {'Content-Type': 'application/json'},
+          );
         }
       } catch (e) {
         return Response.internalServerError(
-            body: jsonEncode({'error': 'Erro no servidor'}),
-            headers: {'Content-Type': 'application/json'});
+          body: jsonEncode({'error': 'Erro no servidor: $e'}),
+          headers: {'Content-Type': 'application/json'},
+        );
       }
     });
 
