@@ -1,4 +1,4 @@
-import '../customer/entities/newCustomer.dart';
+import '../customer/entities/customer.dart';
 import '../repository/repository_customer.dart';
 
 class UseCaseCustomer {
@@ -6,6 +6,10 @@ class UseCaseCustomer {
 
   UseCaseCustomer(this.repository);
 
-  Future<void> addCustomer(NewCustomer newCustomer)
-   => repository.addCustomer(newCustomer);
+  Future<void> addCustomer(Customer customer)
+   => repository.addCustomer(customer);
+
+
+  Future<List<Customer>> listCustomers() =>
+      repository.listCustomers();
 }

@@ -1,13 +1,16 @@
+import 'address.dart';
+
 /// class responsible for customer info
 class Customer {
-  Customer(
-      { this.name,
-       this.surname,
-       this.email,
-       this.whatsapp,
-       this.document,
-       this.observation
-      });
+  Customer({
+    this.name,
+    this.surname,
+    this.email,
+    this.whatsapp,
+    this.document,
+    this.observation,
+    this.address,
+  });
 
   /// name of customer
   final String? name;
@@ -27,19 +30,26 @@ class Customer {
   /// observation of customer
   final String? observation;
 
+  /// address of customer
+  final Address? address;
+
   factory Customer.fromJson(Map<String, dynamic> json) {
+    final customerData = json['Customer'];
+
+
     return Customer(
-      name: json['name'],
-      surname: json['surname'],
-      email: json['email'],
-      whatsapp: json['whatsapp'],
-      document: json['document'],
-      observation: json['observation'],
+      name: customerData['name'],
+      surname: customerData['surname'],
+      email: customerData['email'],
+      whatsapp: customerData['whatsapp'],
+      document: customerData['document'],
+      observation: customerData['observation'],
+      address: customerData['address'] != null ? Address.fromJson(customerData['address']) : null,
     );
   }
 
   @override
   String toString() {
-    return 'Customer{name: $name, surname: $surname, whatsapp: $whatsapp, email: $email, document: $document, observation: $observation}';
+    return 'Customer{name: $name, surname: $surname, whatsapp: $whatsapp, email: $email, document: $document, observation: $observation, address: $address}';
   }
 }

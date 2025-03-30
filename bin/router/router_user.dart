@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
-
-import '../customer/entities/newCustomer.dart';
+import '../customer/entities/customer.dart';
 import '../domain/use_case_customer.dart';
 import '../repository/repository_customer.dart';
 import '../repository/repository_user.dart';
@@ -12,6 +11,22 @@ import '../domain/use_case_user.dart';
 class UserRouter {
   Router get router {
     final router = Router();
+
+router.get('/listCustomers', (Request request) async {
+      try {
+
+        final repository = RepositoryCustomer();
+        final useCaseCustomer = UseCaseCustomer(repository);
+
+
+        final list = await useCaseCustomer.listCustomers();
+        return list;
+      } catch (e) {
+        return Response.internalServerError(
+            body: jsonEncode({'error': 'Erro ao listar clientes'}),
+            headers: {'Content-Type': 'application/json'});
+      }
+    });
 
 
     router.get('/get_servidor', (Request request) async {
@@ -34,7 +49,7 @@ class UserRouter {
         final body = await request.readAsString();
         final data = jsonDecode(body);
 
-        final newCustomer = NewCustomer.fromJson(data);
+        final newCustomer = Customer.fromJson(data);
 
         await useCaseCustomer.addCustomer(newCustomer);
 
@@ -60,11 +75,11 @@ class UserRouter {
         await useCaseUser.addUser(user);
 
         return Response.ok(
-            jsonEncode({'message': 'Usuário cadastrado com sucesso'}),
+            jsonEncode({'message': 'Usuário cadastrado com sucesso para o gostoso do valdi'}),
             headers: {'Content-Type': 'application/json'});
       } catch (e) {
         return Response.internalServerError(
-            body: jsonEncode({'error': 'Erro ao processar requisição'}),
+            body: jsonEncode({'error': 'Erro ao processar requisição do gostoso do valdi'}),
             headers: {'Content-Type': 'application/json'});
       }
     });
