@@ -21,7 +21,6 @@ class UserRouter {
         final list = await useCaseCustomer.listCustomers();
 
         final jsonResponse = jsonEncode(list.map((customer) => customer.toJson()).toList());
-
         return Response.ok(
           jsonResponse,
           headers: {'Content-Type': 'application/json'},
@@ -92,6 +91,33 @@ class UserRouter {
             headers: {'Content-Type': 'application/json'});
       }
     });
+
+    router.delete('/delete_customer', (Request request) async {
+      try {
+        final repository = RepositoryCustomer();
+        final useCaseCustomer = UseCaseCustomer(repository);
+
+        final body = await request.readAsString();
+
+        final data = jsonDecode(body);
+        final id = data['id'];
+
+
+        await useCaseCustomer.deleteCustomer(id);
+
+        return Response.ok(
+          jsonEncode({'success': true}),
+          headers: {'Content-Type': 'application/json'},
+        );
+      } catch (e) {
+        print('Erro ao deletar cliente: $e');
+        return Response.internalServerError(
+          body: jsonEncode({'error': 'Erro ao deletar cliente'}),
+          headers: {'Content-Type': 'application/json'},
+        );
+      }
+    }
+    );
 
     router.post('/login', (Request request) async {
       try {

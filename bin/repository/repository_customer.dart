@@ -8,6 +8,8 @@ abstract class IRepositoryCustomer {
   Future<void> addCustomer(Customer customer);
 
   Future<List<Customer>> listCustomers();
+
+  Future<void> deleteCustomer(int id);
 }
 
 class RepositoryCustomer implements IRepositoryCustomer{
@@ -40,7 +42,8 @@ class RepositoryCustomer implements IRepositoryCustomer{
     }
   }
 
-Future<List<Customer>> listCustomers() async {
+@override
+  Future<List<Customer>> listCustomers() async {
   try {
     String query = '''
                 SELECT * FROM customer as c
@@ -59,9 +62,9 @@ Future<List<Customer>> listCustomers() async {
 
     List<Customer> list = [];
     for(var row in result){
+      list.add(Customer.fromQuery(row));
     }
- print('list ${list.length}');
-    return [];
+    return list;
 
 
   }catch (e) {
@@ -71,6 +74,25 @@ Future<List<Customer>> listCustomers() async {
   return [];
 }
 
+Future<void> deleteCustomer(int id)async{
+    print('cheguei no repositorio ');
+    try{
+      var args = [];
+
+      args.add(id);
+
+
+
+      final db = DatabaseHelper.database;
+
+      await db.rawDelete('DELETE FROM address WHERE customer_id = ?', [id]);
+
+      await db.rawDelete('DELETE FROM customer WHERE id = ?', [id]);
+
+    }catch(e){
+      print('Erro ao deletar cliente $e');
+    }
+}
 
 
 }

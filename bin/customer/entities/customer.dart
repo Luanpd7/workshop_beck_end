@@ -3,6 +3,7 @@ import 'address.dart';
 /// class responsible for customer info
 class Customer {
   Customer({
+    this.id,
     this.name,
     this.surname,
     this.email,
@@ -11,6 +12,9 @@ class Customer {
     this.observation,
     this.address,
   });
+
+  /// id of customer
+  final int? id;
 
   /// name of customer
   final String? name;
@@ -34,34 +38,54 @@ class Customer {
   final Address? address;
 
   factory Customer.fromJson(Map<String, dynamic> json) {
-    final customerData = json['Customer'];
-
+    final data = json['Customer'];
     return Customer(
-      name: customerData['name'],
-      surname: customerData['surname'],
-      email: customerData['email'],
-      whatsapp: customerData['whatsapp'],
-      document: customerData['document'],
-      observation: customerData['observation'],
-      address: customerData['address'] != null ? Address.fromJson(
-          customerData['address']) : null,
+      id: data['id'],
+      name: data['name'] ?? '',
+      surname: data['surname'] ?? '',
+      email: data['email'] ?? '',
+      whatsapp: data['whatsapp'] ?? '',
+      document: data['document'] ?? '',
+      observation: data['observation'] ?? '',
+      address:
+          data['address'] != null ? Address.fromJson(data['address']) : null,
     );
   }
 
-  Map<String, dynamic> toJson()
-  {
-  return {
-  'name' : name ?? '',
-  'surname' : surname ?? '',
-  'email' : email ?? '',
-  'whatsapp' : whatsapp ?? '',
-  'document': document ?? '',
-  'observation': observation ?? '',
-  };
+  factory Customer.fromQuery(Map<String, dynamic> json) {
+    return Customer(
+      id: json['id'] ?? '',
+      name: json['name'] ?? '',
+      surname: json['surname'] ?? '',
+      email: json['email'] ?? '',
+      whatsapp: json['whatsapp'] ?? '',
+      document: json['document'] ?? '',
+      observation: json['observation'] ?? '',
+      address: Address(
+        cep: json['cep'],
+        city: json['city'],
+        neighborhood: json['neighborhood'],
+        road: json['road'],
+        number: json['number'],
+      ),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id ?? '',
+      'name': name ?? '',
+      'surname': surname ?? '',
+      'email': email ?? '',
+      'whatsapp': whatsapp ?? '',
+      'document': document ?? '',
+      'observation': observation ?? '',
+      'address': address?.toJson() ?? {},
+    };
+  }
+
+  @override
+  String toString() {
+    return 'Customer{name: $name, surname: $surname, whatsapp: $whatsapp, email: $email, document: $document, observation: $observation, address: $address}';
+  }
 }
-
-
-@override
-String toString() {
-  return 'Customer{name: $name, surname: $surname, whatsapp: $whatsapp, email: $email, document: $document, observation: $observation, address: $address}';
-}}
