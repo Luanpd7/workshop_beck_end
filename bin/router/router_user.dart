@@ -79,15 +79,18 @@ class UserRouter {
         final body = await request.readAsString();
         final data = jsonDecode(body);
 
+
         final user = User.fromJson(data);
+        print('----------------- $user');
         await useCaseUser.addUser(user);
 
+
         return Response.ok(
-            jsonEncode({'message': 'Usuário cadastrado com sucesso para o gostoso do valdi'}),
+            jsonEncode({'message': 'Usuário cadastrado com sucesso'}),
             headers: {'Content-Type': 'application/json'});
       } catch (e) {
         return Response.internalServerError(
-            body: jsonEncode({'error': 'Erro ao processar requisição do gostoso do valdi'}),
+            body: jsonEncode({'error': 'Erro ao processar requisição'}),
             headers: {'Content-Type': 'application/json'});
       }
     });
@@ -127,10 +130,11 @@ class UserRouter {
         final body = await request.readAsString();
         final data = jsonDecode(body);
 
-        final email = data['email'];
+        print('body $body');
+        final name = data['name'];
         final password = data['password'];
 
-        final user = await useCaseUser.findUser(email, password);
+        final user = await useCaseUser.findUser(name, password);
 
 
 

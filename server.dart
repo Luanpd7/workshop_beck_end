@@ -7,7 +7,7 @@ import 'bin/router/router_user.dart';
 
 
 void main() async {
-  await DatabaseHelper.init();
+  await DatabaseHelper.getDatabase();
   final userRouter = UserRouter().router;
 
   final handler = Pipeline().addMiddleware(logRequests()).addHandler(userRouter);

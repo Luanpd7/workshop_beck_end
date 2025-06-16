@@ -86,6 +86,6 @@ class Customer {
 
   @override
   String toString() {
-    return 'Customer{name: $name, surname: $surname, whatsapp: $whatsapp, email: $email, document: $document, observation: $observation, address: $address}';
+    return 'Customer{id: $id, name: $name, surname: $surname, whatsapp: $whatsapp, email: $email, document: $document, observation: $observation, address: $address}';
   }
 }
