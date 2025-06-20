@@ -81,7 +81,6 @@ class UserRouter {
 
 
         final user = User.fromJson(data);
-        print('----------------- $user');
         await useCaseUser.addUser(user);
 
 
@@ -130,7 +129,6 @@ class UserRouter {
         final body = await request.readAsString();
         final data = jsonDecode(body);
 
-        print('body $body');
         final name = data['name'];
         final password = data['password'];
 

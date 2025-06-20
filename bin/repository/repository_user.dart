@@ -11,7 +11,6 @@ class RepositoryUser implements IRepositoryUser {
   @override
   Future<void> addUser(User user) async {
     try {
-      print('user ------------------ ${user.toString()}');
 
       final db = await DatabaseHelper.getDatabase();
 
